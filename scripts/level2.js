@@ -8,7 +8,7 @@ class level2 extends Phaser.Scene {
     this.load.image("background", "./assets/Ground.png");
     this.load.image("character1", "./assets/firecharacter.png");
     this.load.image("character2", "./assets/watercharacter.png");
-    this.load.tilemapCSV("tilemap", "./assets/level1.csv");
+    this.load.tilemapCSV("tilemap2", "./assets/level2.csv");
     this.load.audio("coin", "./assets/coin.mp3");
     this.load.audio("jump", "./assets/jump.mp3");
     this.load.audio("dead", "./assets/dead.mp3");
@@ -29,7 +29,7 @@ class level2 extends Phaser.Scene {
     background.setScrollFactor(0);
 
     const map = this.make.tilemap({
-      key: "tilemap",
+      key: "tilemap2",
       tileWidth: 32,
       tileHeight: 32,
     });
