@@ -68,18 +68,19 @@ class Coin extends Phaser.GameObjects.Sprite {
 }
 
 var config = {
-  type: Phaser.AUTO,
-  width: 640,
-  height: 640,
-  parent: "gameContainer",
-  physics: {
-    default: "arcade",
-    arcade: {
-      gravity: { y: 300 },
-      debug: true,
+    type: Phaser.AUTO,
+    width: 640,
+    height: 640,
+    parent: "gameContainer",
+    physics: {
+      default: "arcade",
+      arcade: {
+        gravity: { y: 300 },
+        debug: true,
+      },
     },
-  },
-  scene: [GameStart, level1, NextLevel, level2, GameOver],
-};
-
-var game = new Phaser.Game(config);
+    scene: [GameStart, level1, level2, level3, NextLevel, GameOver]
+  };
+  
+  var game = new Phaser.Game(config);
+  

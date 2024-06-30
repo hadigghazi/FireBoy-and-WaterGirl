@@ -41,4 +41,4 @@ export default class GameStart extends Phaser.Scene {
     startGame() {
         this.scene.start("level1");
     }
-}
+}  

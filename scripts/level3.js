@@ -4,11 +4,12 @@ class level3 extends Phaser.Scene {
     }
   
     preload() {
+      console.log('Preloading assets for level 3');
       this.load.image("tileset", "./assets/tileset.png");
       this.load.image("background", "./assets/Ground.png");
       this.load.image("character1", "./assets/firecharacter.png");
       this.load.image("character2", "./assets/watercharacter.png");
-      his.load.tilemapCSV("tilemap3", "./assets/level3.csv");
+      this.load.tilemapCSV("tilemap3", "./assets/level3.csv");
       this.load.audio("coin", "./assets/coin.mp3");
       this.load.audio("jump", "./assets/jump.mp3");
       this.load.audio("dead", "./assets/dead.mp3");
@@ -18,6 +19,7 @@ class level3 extends Phaser.Scene {
     }
   
     create() {
+      console.log('Creating level 3');
       const background = this.add.image(
         this.cameras.main.centerX,
         this.cameras.main.centerY,
@@ -27,7 +29,7 @@ class level3 extends Phaser.Scene {
       background.displayWidth = this.cameras.main.width;
       background.displayHeight = this.cameras.main.height;
       background.setScrollFactor(0);
-  
+      console.log('Loading tilemap for level 3');
       const map = this.make.tilemap({
         key: "tilemap3",
         tileWidth: 32,

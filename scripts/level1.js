@@ -215,12 +215,13 @@ class level1 extends Phaser.Scene {
     }
   
     finishScene() {
-      const currentLevel = 1;
-      this.registry.set("currentLevel", currentLevel);
+      console.log('Finishing level 1 and transitioning to next level');
+      const nextLevel = 2; // Set to the next level number
+      this.registry.set("currentLevel", nextLevel);
       this.registry.set("score", this.score);
       this.playAudio("dead");
       this.theme.stop();
-      this.scene.start("nextlevel", { level: currentLevel, score: this.score });
+      this.scene.start("nextlevel", { level: nextLevel, score: this.score });
     }
   }
   
