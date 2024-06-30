@@ -69,7 +69,7 @@ class Coin extends Phaser.GameObjects.Sprite {
 
 var config = {
     type: Phaser.AUTO,
-    width: 640,
+    width: 800,
     height: 640,
     parent: "gameContainer",
     physics: {
