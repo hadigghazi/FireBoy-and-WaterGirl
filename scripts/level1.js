@@ -102,19 +102,39 @@ class level1 extends Phaser.Scene {
   }
 
   createCoins() {
-    for (let i = 0; i < 10; i++) {
-      const x = Phaser.Math.Between(100, 800);
-      const y = Phaser.Math.Between(100, 600);
-      const coin = this.coins.create(x, y, "coin");
-      coin.body.allowGravity = false;
+    // Coin positions for character 1 (blue)
+    const coinPositions = [
+        { x: 60, y: 50 },
+        { x: 80, y: 310 },
+        { x: 160, y: 150 },
+        { x: 350, y: 440 },
+        { x: 560, y: 560 },
+        { x: 350, y: 560 },
+    ];
+
+    // Create coins at the specified positions
+    for (let i = 0; i < coinPositions.length; i++) {
+        const pos = coinPositions[i];
+        const coin = this.coins.create(pos.x, pos.y, "coin");
+        coin.body.allowGravity = false;
     }
-    for (let i = 0; i < 10; i++) {
-      const x = Phaser.Math.Between(100, 800);
-      const y = Phaser.Math.Between(100, 600);
-      const coin2 = this.coins2.create(x, y, "coin2");
-      coin2.body.allowGravity = false;
+
+    const coin2Positions = [
+        { x: 500, y: 70 },
+        { x: 140, y: 300 },
+        { x: 570, y: 300 },
+        { x: 300, y: 440 },
+        { x: 510, y: 550 },
+        { x: 230, y: 550 },
+    ];
+
+    // Create coins2 at the specified positions
+    for (let i = 0; i < coin2Positions.length; i++) {
+        const pos = coin2Positions[i];
+        const coin2 = this.coins2.create(pos.x, pos.y, "coin2");
+        coin2.body.allowGravity = false;
     }
-  }
+}
 
   hitCoin(player, coin) {
     this.playAudio("coin");
