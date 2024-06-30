@@ -1,4 +1,4 @@
-class level1 extends Phaser.Scene {
+class level2 extends Phaser.Scene {
   constructor() {
     super({ key: "level2" });
   }
@@ -29,7 +29,7 @@ class level1 extends Phaser.Scene {
     background.setScrollFactor(0);
 
     const map = this.make.tilemap({
-      key: "tilemap",
+      key: "tilemap2",
       tileWidth: 32,
       tileHeight: 32,
     });
