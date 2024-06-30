@@ -9,7 +9,7 @@ class level3 extends Phaser.Scene {
       this.load.image("background", "./assets/Ground.png");
       this.load.image("character1", "./assets/firecharacter.png");
       this.load.image("character2", "./assets/watercharacter.png");
-      this.load.tilemapCSV("tilemap3", "./assets/level3.csv");
+      this.load.tilemapCSV("tilemap3", "./assets/level.csv");
       this.load.audio("coin", "./assets/coin.mp3");
       this.load.audio("jump", "./assets/jump.mp3");
       this.load.audio("dead", "./assets/dead.mp3");
