@@ -1,4 +1,4 @@
-class level2 extends Phaser.Scene {
+class level1 extends Phaser.Scene {
   constructor() {
     super({ key: "level2" });
   }
@@ -29,7 +29,7 @@ class level2 extends Phaser.Scene {
     background.setScrollFactor(0);
 
     const map = this.make.tilemap({
-      key: "tilemap2",
+      key: "tilemap",
       tileWidth: 32,
       tileHeight: 32,
     });
@@ -215,9 +215,12 @@ class level2 extends Phaser.Scene {
   }
 
   finishScene() {
+    const currentLevel = 1;
+    this.registry.set("currentLevel", currentLevel);
+    this.registry.set("score", this.score);
     this.playAudio("dead");
     this.theme.stop();
-    this.scene.start("gameover");
+    this.scene.start("nextlevel", { level: currentLevel, score: this.score });
   }
 }
 
