@@ -9,10 +9,11 @@
 
 header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 10px;
     align-items: center;
     height: 100px;
-    padding: 0 5%;
+    padding: 5%;
     position: absolute;
     width: 100%;
     z-index: 100;
@@ -106,4 +107,24 @@ html, body {
 .page-footer {
     height: 200px;
     background-color: #3B3291;
+}
+.logo{
+    border-radius:50%;
+    width: 100px;
+    height: 100px;
+    transition: transform 0.3s ease;
+    
+}
+.logo:hover{
+    background-color: #5247B9;
+    transform: scale(1.1);
+}
+.title1{
+    font-size: 20px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+           
+}
+.title1:hover{
+    transform: scale(1.1);
 }
