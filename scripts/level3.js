@@ -178,12 +178,21 @@ class level3 extends Phaser.Scene {
     createDoor() {
       this.door=this.physics.add.sprite(50,100,"closedDoor",this.door).setOrigin(0.5,1);
       this.door.body.allowGravity=false;
-      this.door.setCollideWorldBounds(true);
 
-      this.physics.add.overlap(this.character1,this.door,this.finishScene,null,this);
-      this.physics.add.overlap(this.character2,this.door,this.finishScene,null,this);
+
+      this.physics.add.overlap(this.character1,this.door,()=>this.reactDoor(this.character1));
+      this.physics.add.overlap(this.character2,this.door,()=>this.reactDoor(this.character2));
     }
-  
+    reactDoor(player){
+      if (player==this.character1){
+        this.player1HitDoor=true;
+      }else if(player==this.character2){
+        this.player2HitDoor=true;
+      }
+      if (this.player1HitDoor &&this.player2HitDoor){
+        this.finishScene()
+      }
+    }
     loadAudios() {
       this.audios = {
         jump: this.sound.add("jump"),
@@ -233,10 +242,7 @@ class level3 extends Phaser.Scene {
         this.playAudio("jump");
       }
   
-      const thresholdY = 150; 
-      if (this.character1.y <= thresholdY && this.character2.y <= thresholdY) {
-        this.finishScene();
-      }
+      
     }
   
     updateScore(points = 0) {

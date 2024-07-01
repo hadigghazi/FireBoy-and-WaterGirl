@@ -138,6 +138,7 @@ class level1 extends Phaser.Scene {
       const pos = coinPositions[i];
       const coin = this.coins.create(pos.x, pos.y, "coin");
       coin.body.allowGravity = false;
+      coin.setOrigin(0.5, 0.5);
     }
 
     // Coin2 positions for character 2 (red)
@@ -161,6 +162,7 @@ class level1 extends Phaser.Scene {
       const coin2 = this.coins2.create(pos.x, pos.y, "coin2");
       coin2.body.allowGravity = false;
       
+      
     }
   }
   hitCoin(player, coin) {
@@ -174,12 +176,21 @@ class level1 extends Phaser.Scene {
     
     this.door = this.physics.add.sprite(50, 100 , 'closedDoor').setOrigin(0.5, 1);
     this.door.body.allowGravity = false;
-    this.door.setCollideWorldBounds(true);
     
-    
-    this.physics.add.overlap(this.character1, this.door, this.finishScene, null, this);
-    this.physics.add.overlap(this.character2, this.door, this.finishScene, null, this);
+    this.physics.add.overlap(this.character1, this.door, ()=> this.reactDoor(this.character1));
+    this.physics.add.overlap(this.character2, this.door,()=> this.reactDoor(this.character2));
   }
+    reactDoor(player) {
+      if(player==this.character1){
+        this.character1HitDoor=true;
+      }
+      else if(player==this.character2){
+        this.character2HitDoor=true;
+      }
+      if (this.character1HitDoor && this.character2HitDoor){
+        this.finishScene()
+      }
+    }
 
   loadAudios() {
     this.audios = {
