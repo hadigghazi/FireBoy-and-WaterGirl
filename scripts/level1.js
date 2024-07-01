@@ -15,6 +15,7 @@ class level1 extends Phaser.Scene {
     this.load.audio("theme", "./assets/theme.mp3");
     this.load.image("coin", "./assets/diamond.png");
     this.load.image("coin2", "./assets/fire.png");
+    this.load.image("closedDoor", "./assets/closedDoor.png");
   }
 
   create() {
@@ -113,6 +114,7 @@ class level1 extends Phaser.Scene {
     this.character2.setDebug(true, true, 0xff0000);
 
     this.createCoins();
+    this.createDoor();
   }
 
   createCoins() {
@@ -167,6 +169,17 @@ class level1 extends Phaser.Scene {
     coin.destroy();
   }
 
+  createDoor() {
+    
+    this.door = this.physics.add.sprite(50, 100 , 'closedDoor').setOrigin(0.5, 1);
+    this.door.body.allowGravity = false;
+    this.door.setCollideWorldBounds(true);
+    
+    
+    this.physics.add.overlap(this.character1, this.door, this.finishScene, null, this);
+    this.physics.add.overlap(this.character2, this.door, this.finishScene, null, this);
+  }
+
   loadAudios() {
     this.audios = {
       jump: this.sound.add("jump"),
@@ -214,11 +227,6 @@ class level1 extends Phaser.Scene {
     if (this.input.keyboard.addKey('W').isDown && this.character2.body.blocked.down) {
       this.character2.setVelocityY(-500);
       this.playAudio("jump");
-    }
-
-    const thresholdY = 150; 
-    if (this.character1.y <= thresholdY && this.character2.y <= thresholdY) {
-      this.finishScene();
     }
   }
 

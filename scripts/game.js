@@ -31,6 +31,21 @@ class Generator {
           this
       );
   }
+  generateObstacle() {
+    this.scene.obstacles.add(
+        new Obstacle(
+            this.scene,
+            800,
+            this.scene.height - Phaser.Math.Between(32, 128)
+        )
+    );
+    this.scene.time.delayedCall(
+        Phaser.Math.Between(1500, 2500),
+        () => this.generateObstacle(),
+        null,
+        this
+    );
+}
 }
 
 
@@ -65,6 +80,28 @@ class Coin extends Phaser.GameObjects.Sprite {
       });
       this.play({ key: "coin", repeat: -1 });
   }
+}
+class Obstacle extends Phaser.GameObjects.Rectangle {
+    constructor(scene, x, y) {
+        super(scene, x, y, 32, 32, 0xff0000);
+        scene.add.existing(this);
+        scene.physics.add.existing(this);
+        this.body.setAllowGravity(false);
+        const alpha = 1 / Phaser.Math.Between(1, 3);
+
+        this.init();
+    }
+
+    init() {
+        this.scene.tweens.add({
+            targets: this,
+            x: { from: 820, to: -100 },
+            duration: 2000,
+            onComplete: () => {
+                this.destroy();
+            },
+        });
+    }
 }
 
 var config = {
