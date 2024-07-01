@@ -6,8 +6,14 @@ class level2 extends Phaser.Scene {
   preload() {
     this.load.image("tileset", "./assets/tileset.png");
     this.load.image("background", "./assets/Ground.png");
-    this.load.image("character1", "./assets/firecharacter.png");
-    this.load.image("character2", "./assets/watercharacter.png");
+    this.load.image(
+      "character1",
+      this.loadImageFromLocalStorage1("character1")
+    );
+    this.load.image(
+      "character2",
+      this.loadImageFromLocalStorage2("character2")
+    );
     this.load.tilemapCSV("tilemap2", "./assets/Level2.csv");
     this.load.audio("coin", "./assets/coin.mp3");
     this.load.audio("jump", "./assets/jump.mp3");
@@ -114,6 +120,26 @@ class level2 extends Phaser.Scene {
 
     this.createCoins();
   }
+
+  ///////////////
+  loadImageFromLocalStorage1(key) {
+    let imgData = localStorage.getItem(key);
+    if (imgData) {
+      return imgData;
+    }
+    return "assets/firecharacter.png";
+  }
+
+  loadImageFromLocalStorage2(key) {
+    let imgData = localStorage.getItem(key);
+    if (imgData) {
+      return imgData;
+    }
+    return "assets/watercharacter.png";
+  }
+
+
+  ////////////
 
   createCoins() {
     for (let i = 0; i < 10; i++) {
