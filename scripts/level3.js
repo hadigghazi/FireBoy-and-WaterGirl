@@ -1,26 +1,18 @@
-// level1.js
-class level1 extends Phaser.Scene {
+class level3 extends Phaser.Scene {
   constructor() {
-    super({ key: "level1" });
-  }
-
-  init(data) {
-    this.charactersData = data.characters || [];
+    super({ key: "level3" });
   }
 
   preload() {
     this.load.image("tileset", "./assets/tileset.png");
     this.load.image("background", "./assets/Ground.png");
-    this.load.tilemapCSV("tilemap", "./assets/level1.csv");
+    this.load.image("character1", "./assets/firecharacter.png");
+    this.load.image("character2", "./assets/watercharacter.png");
+    this.load.tilemapCSV("tilemap", "./assets/level3.csv");
     this.load.audio("coin", "./assets/coin.mp3");
     this.load.audio("jump", "./assets/jump.mp3");
     this.load.audio("win", "./assets/win.mp3");
     this.load.audio("theme", "./assets/theme.mp3");
-
-    this.charactersData.forEach((charKey, index) => {
-      this.load.image(`character${index + 1}`, `./assets/${charKey}.png`);
-    });
-
     this.load.image("coin", "./assets/diamond.png");
     this.load.image("coin2", "./assets/fire.png");
   }
@@ -46,27 +38,32 @@ class level1 extends Phaser.Scene {
 
     const groundLevel = this.cameras.main.height - 32;
 
-    this.characters = [];
-    this.charactersData.forEach((charKey, index) => {
-      const character = this.physics.add.sprite(100 + index * 100, groundLevel, `character${index + 1}`)
-        .setOrigin(0.5, 1)
-        .setCollideWorldBounds(true)
-        .setBounce(0.2)
-        .setDrag(100)
-        .setGravityY(500)
-        .setScale(0.2);
+    this.character1 = this.physics.add
+      .sprite(100, groundLevel, "character1")
+      .setOrigin(0.5, 1)
+      .setCollideWorldBounds(true)
+      .setBounce(0.2)
+      .setDrag(100)
+      .setGravityY(500)
+      .setScale(0.2);
+    this.character2 = this.physics.add
+      .sprite(200, groundLevel, "character2")
+      .setOrigin(0.5, 1)
+      .setCollideWorldBounds(true)
+      .setBounce(0.2)
+      .setDrag(100)
+      .setGravityY(500)
+      .setScale(0.2);
 
-      character.body.setSize(80, 200);
-      this.characters.push(character);
-    });
+    this.character1.body.setSize(80, 200);
+    this.character2.body.setSize(80, 200);
 
     map.setCollisionBetween(0, 2);
-    this.characters.forEach(character => {
-      this.physics.add.collider(character, layer);
-    });
+    this.physics.add.collider(this.character1, layer);
+    this.physics.add.collider(this.character2, layer);
 
-    this.physics.add.overlap(this.characters[0], this.coins2, this.hitCoin, null, this);
-    this.physics.add.overlap(this.characters[1], this.coins, this.hitCoin, null, this);
+    this.physics.add.overlap(this.character1, this.coins2, this.hitCoin, null, this);
+    this.physics.add.overlap(this.character2, this.coins, this.hitCoin, null, this);
 
     this.loadAudios();
     this.playMusic();
@@ -86,13 +83,12 @@ class level1 extends Phaser.Scene {
     });
 
     this.cursors = this.input.keyboard.createCursorKeys();
-    this.cameras.main.startFollow(this.characters[0], true);
+    this.cameras.main.startFollow(this.character1, true);
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     layer.setDepth(1);
-    this.characters.forEach(character => {
-      character.setDepth(2);
-    });
+    this.character1.setDepth(2);
+    this.character2.setDepth(2);
 
     this.createCoins();
   }
@@ -146,30 +142,30 @@ class level1 extends Phaser.Scene {
   }
 
   update() {
-    this.characters[0].setVelocityX(0);
+    this.character1.setVelocityX(0);
     if (this.cursors.left.isDown) {
-      this.characters[0].setVelocityX(-200);
+      this.character1.setVelocityX(-200);
     } else if (this.cursors.right.isDown) {
-      this.characters[0].setVelocityX(200);
+      this.character1.setVelocityX(200);
     }
-    if (this.cursors.up.isDown && this.characters[0].body.blocked.down) {
-      this.characters[0].setVelocityY(-500);
+    if (this.cursors.up.isDown && this.character1.body.blocked.down) {
+      this.character1.setVelocityY(-500);
       this.playAudio("jump");
     }
 
-    this.characters[1].setVelocityX(0);
+    this.character2.setVelocityX(0);
     if (this.input.keyboard.addKey('A').isDown) {
-      this.characters[1].setVelocityX(-200);
+      this.character2.setVelocityX(-200);
     } else if (this.input.keyboard.addKey('D').isDown) {
-      this.characters[1].setVelocityX(200);
+      this.character2.setVelocityX(200);
     }
-    if (this.input.keyboard.addKey('W').isDown && this.characters[1].body.blocked.down) {
-      this.characters[1].setVelocityY(-500);
+    if (this.input.keyboard.addKey('W').isDown && this.character2.body.blocked.down) {
+      this.character2.setVelocityY(-500);
       this.playAudio("jump");
     }
 
     const thresholdY = 150;
-    if (this.characters[0].y <= thresholdY && this.characters[1].y <= thresholdY) {
+    if (this.character1.y <= thresholdY && this.character2.y <= thresholdY) {
       this.finishScene();
     }
   }
@@ -199,8 +195,8 @@ class level1 extends Phaser.Scene {
   finishScene() {
     this.playAudio("win");
     this.theme.stop();
-    this.scene.start("nextlevel", { score: this.score, currentlevel: 1 });
+    this.scene.start("gameover");
   }
 }
 
-export default level1;
+export default level3;

@@ -1,6 +1,8 @@
+import ChooseChar from "./choose.js"
 import GameOver from "./end.js";
 import level1 from "./level1.js";
 import level2 from "./level2.js";
+import level3 from "./level3.js";
 import NextLevel from "./next.js";
 import GameStart from "./start.js";
 
@@ -54,14 +56,6 @@ class Coin extends Phaser.GameObjects.Sprite {
           },
       });
 
-      const coinAnimation = this.scene.anims.create({
-          key: "coin",
-          frames: this.scene.anims.generateFrameNumbers("coin", {
-              start: 0,
-              end: 7,
-          }),
-          frameRate: 8,
-      });
       this.play({ key: "coin", repeat: -1 });
   }
 }
@@ -78,7 +72,7 @@ var config = {
       debug: true,
     },
   },
-  scene: [GameStart, level1, NextLevel, level2, GameOver],
+  scene: [GameStart, ChooseChar, level1, NextLevel, level2, level3, GameOver],
 };
 
 var game = new Phaser.Game(config);
