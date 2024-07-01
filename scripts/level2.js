@@ -8,10 +8,10 @@ class level2 extends Phaser.Scene {
     this.load.image("background", "./assets/Ground.png");
     this.load.image("character1", "./assets/firecharacter.png");
     this.load.image("character2", "./assets/watercharacter.png");
-    this.load.tilemapCSV("tilemap", "./assets/level1.csv");
+    this.load.tilemapCSV("tilemap2", "./assets/Level2.csv");
     this.load.audio("coin", "./assets/coin.mp3");
     this.load.audio("jump", "./assets/jump.mp3");
-    this.load.audio("win", "./assets/win.mp3");
+    this.load.audio("dead", "./assets/dead.mp3");
     this.load.audio("theme", "./assets/theme.mp3");
     this.load.image("coin", "./assets/diamond.png");
     this.load.image("coin2", "./assets/fire.png");
@@ -29,7 +29,7 @@ class level2 extends Phaser.Scene {
     background.setScrollFactor(0);
 
     const map = this.make.tilemap({
-      key: "tilemap",
+      key: "tilemap2",
       tileWidth: 32,
       tileHeight: 32,
     });
@@ -115,17 +115,49 @@ class level2 extends Phaser.Scene {
     this.createCoins();
   }
 
-  createCoins() {
-    for (let i = 0; i < 10; i++) {
-      const x = Phaser.Math.Between(100, 800);
-      const y = Phaser.Math.Between(100, 600);
-      const coin = this.coins.create(x, y, "coin");
+   createCoins() {
+    // Coin positions for character 1 (blue)
+    const coinPositions = [
+      { x: 240, y: 240 },
+      { x: 60, y: 170 },
+      { x: 100, y: 60 },
+      { x: 580, y: 180 },
+      { x: 260, y: 500 },
+      { x: 300, y: 370 },
+      { x: 430, y: 140 },
+      { x: 580, y: 580 },
+      { x: 580, y: 340 },
+      { x: 100, y: 380 },
+      { x: 580, y: 220 }
+    ];
+
+    // Create coins at the specified positions
+    for (let i = 0; i < coinPositions.length; i++) {
+      const pos = coinPositions[i];
+      const coin = this.coins.create(pos.x, pos.y, "coin");
       coin.body.allowGravity = false;
     }
-    for (let i = 0; i < 10; i++) {
-      const x = Phaser.Math.Between(100, 800);
-      const y = Phaser.Math.Between(100, 600);
-      const coin2 = this.coins2.create(x, y, "coin2");
+
+    // Coin2 positions for character 2 (red)
+    const coin2Positions = [
+      { x: 200, y: 230 },
+      { x: 60, y: 60 },
+      { x: 140, y: 60 },
+      { x: 300, y: 490 },
+      { x: 100, y: 170 },
+      { x: 580, y: 370 },
+      { x: 540, y: 580 },
+      { x: 270, y:360 },
+      { x: 400, y: 130 },
+      { x: 100, y: 460 },
+      
+      { x: 550, y: 170 }
+    ];
+    
+    // Create coins2 at the specified positions
+    for (let i = 0; i < coin2Positions.length; i++) {
+      const pos = coin2Positions[i];
+      const coin2 = this.coins2.create(pos.x, pos.y, "coin2");
       coin2.body.allowGravity = false;
     }
   }
@@ -141,8 +173,7 @@ class level2 extends Phaser.Scene {
     this.audios = {
       jump: this.sound.add("jump"),
       coin: this.sound.add("coin"),
-      win: this.sound.add("win"),
-      //dead: this.sound.add("dead"),
+      dead: this.sound.add("dead"),
     };
   }
 
@@ -216,10 +247,14 @@ class level2 extends Phaser.Scene {
   }
 
   finishScene() {
+    console.log('Finishing level 2 and transitioning to next level');
+    const nextLevel = 3; // Adjust this based on the level
+    this.registry.set("currentLevel", nextLevel);
+    this.registry.set("score", this.score);
     this.playAudio("dead");
     this.theme.stop();
-    this.scene.start("gameover");
+    this.scene.start("nextlevel", { level: nextLevel, score: this.score });
   }
+  
 }
-
 export default level2;
