@@ -8,7 +8,7 @@ class level2 extends Phaser.Scene {
     this.load.image("background", "./assets/Ground.png");
     this.load.image("character1", "./assets/firecharacter.png");
     this.load.image("character2", "./assets/watercharacter.png");
-    this.load.tilemapCSV("tilemap2", "./assets/level2.csv");
+    this.load.tilemapCSV("tilemap2", "./assets/Level2.csv");
     this.load.audio("coin", "./assets/coin.mp3");
     this.load.audio("jump", "./assets/jump.mp3");
     this.load.audio("dead", "./assets/dead.mp3");
@@ -216,12 +216,13 @@ class level2 extends Phaser.Scene {
 
   finishScene() {
     console.log('Finishing level 2 and transitioning to next level');
-    const nextLevel = 3; // Set to the next level number
+    const nextLevel = 3; // Adjust this based on the level
     this.registry.set("currentLevel", nextLevel);
     this.registry.set("score", this.score);
     this.playAudio("dead");
     this.theme.stop();
     this.scene.start("nextlevel", { level: nextLevel, score: this.score });
   }
+  
 }
 export default level2;
