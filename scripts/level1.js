@@ -160,6 +160,7 @@ class level1 extends Phaser.Scene {
       const pos = coin2Positions[i];
       const coin2 = this.coins2.create(pos.x, pos.y, "coin2");
       coin2.body.allowGravity = false;
+      
     }
   }
   hitCoin(player, coin) {
@@ -167,7 +168,7 @@ class level1 extends Phaser.Scene {
     this.showPoints(100, coin.x, coin.y);
     this.updateScore(100);
     coin.destroy();
-  }
+  }0
 
   createDoor() {
     
