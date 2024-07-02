@@ -164,8 +164,9 @@ class level3 extends Phaser.Scene {
       this.playAudio("jump");
     }
 
-    const thresholdY = 150;
-    if (this.character1.y <= thresholdY && this.character2.y <= thresholdY) {
+    const thresholdY = 160;
+    if (this.character1.y <= thresholdY && this.character2.y <= thresholdY
+      && this.character1.x <= 100 && this.character2.x <= 100 ) {
       this.finishScene();
     }
   }
