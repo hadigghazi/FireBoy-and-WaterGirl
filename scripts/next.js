@@ -1,46 +1,64 @@
-class nextlevel extends Phaser.Scene {
+export default class NextLevel extends Phaser.Scene {
   constructor() {
     super({ key: "nextlevel" });
   }
 
   init(data) {
     this.score = data.score || 0;
-    this.currentLevel = data.currentlevel || 1;
+    this.currentLevel = data.level || 1;
   }
 
   preload() {
-    this.load.audio("win", "./assets/win.mp3");
+    this.load.bitmapFont("arcade", "assets/arcade.png", "assets/arcade.xml");
   }
 
-  create() {
-    const winSound = this.sound.add("win");
-    winSound.play();
+  create(data) {
+    this.width = this.sys.game.config.width;
+    this.height = this.sys.game.config.height;
+    this.center_width = this.width / 2;
+    this.center_height = this.height / 2;
 
-    this.add.text(this.cameras.main.centerX, this.cameras.main.centerY - 50, "Level Complete!", {
-      fontSize: "32px",
-      fill: "#fff",
-    }).setOrigin(0.5);
+    this.cameras.main.setBackgroundColor(0x87ceeb);
 
-    this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, `Score: ${this.score}`, {
-      fontSize: "24px",
-      fill: "#fff",
-    }).setOrigin(0.5);
+    const previousScore = data.score || 0;
+    this.add
+      .bitmapText(
+        this.center_width,
+        this.center_height - 50,
+        "arcade",
+        `Score: ${previousScore}`,
+        25
+      )
+      .setOrigin(0.5);
 
-    this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + 50, "Press SPACE to continue", {
-      fontSize: "24px",
-      fill: "#fff",
-    }).setOrigin(0.5);
+    this.add
+      .bitmapText(
+        this.center_width,
+        this.center_height,
+        "arcade",
+        "NEXT LEVEL",
+        45
+      )
+      .setOrigin(0.5);
 
-    this.input.keyboard.once("keydown-SPACE", () => {
-      if (this.currentLevel === 1) {
-        this.scene.start("level2");
-      } else if (this.currentLevel === 2) {
-        this.scene.start("level3");
-      } else {
-        this.scene.start("gameover");
-      }
-    });
+    this.add
+      .bitmapText(
+        this.center_width,
+        this.center_height + 50,
+        "arcade",
+        "Press SPACE or Click to start!",
+        15
+      )
+      .setOrigin(0.5);
+
+    this.input.keyboard.on("keydown-SPACE", this.startNextLevel, this);
+    this.input.on("pointerdown", () => this.startNextLevel(), this);
+  }
+
+  startNextLevel() {
+    const currentLevel = this.registry.get("currentLevel") || this.currentLevel;
+    const nextLevel = `level${currentLevel}`;
+    console.log(`Starting next level: ${nextLevel}`);
+    this.scene.start(nextLevel, { level: currentLevel });
   }
 }
-
-export default nextlevel;
