@@ -55,7 +55,6 @@ html, body {
     font-family: "Poppins", sans-serif;
 }
 
-
 .about {
     padding: 50px;
     background: #3B3291;
@@ -106,7 +105,6 @@ html, body {
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background: #3B3291;
-
 }
 .choose-container h1 {
     margin-bottom: 20px;
@@ -133,7 +131,6 @@ canvas {
     border-radius: 10px;
     margin-bottom: 20px;
     background: #f3f3f3;
-
 }
 .button-wrapper {
     display: flex;
@@ -158,9 +155,112 @@ button:hover {
 #player1-Text, #player2-Text {
     color: #f2f2f2;
     margin-bottom: 10px;
-
 }
 
 ::-webkit-scrollbar {
     width: 0px;
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+    header img {
+        width: 80px;
+        margin-top: 10px;
+        margin-left: 0;
+    }
+    .home .title {
+        font-size: 36px;
+    }
+    .game-container-wrapper {
+        height: auto;
+    }
+    #gameContainer {
+        max-width: 100%;
+        height: auto;
+        margin-top: 50px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .home .title {
+        font-size: 28px;
+    }
+    .choose-container {
+        padding: 10px;
+    }
+    .canvas-container {
+        margin: 10px 0;
+    }
+    canvas {
+        width: 90%;
+        border-width: 1px;
+        margin-bottom: 10px;
+    }
+    .button-wrapper {
+        display: flex;
+        gap: 10px;
+    }
+
+    .home .title {
+        font-size: 16px;
+    }
+
+    button {
+        width: 80%;
+        padding: 10px;
+        font-size: 0.5rem;
+        text-align: center;
+    }
+    .about {
+        padding: 20px;
+    }
+}
+
+#touch-controls-player1, #touch-controls-player2 {
+    position: fixed;
+    bottom: 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+    padding: 10px;
   }
+  
+  #touch-controls-player1 {
+    left: 10px;
+    bottom: 10px;
+  }
+  
+  #touch-controls-player2 {
+    right: 10px;
+    bottom: 10px;
+  }
+  
+  .touch-button {
+    width: 50px;
+    height: 50px;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .touch-button:active {
+    background: rgba(255, 255, 255, 0.8);
+  }
+  
+  @media screen and (min-width: 768px) {
+    #touch-controls-player1, #touch-controls-player2 {
+      display: none;
+    }
+  }
+  

@@ -226,9 +226,73 @@ class GameLevel extends Phaser.Scene {
       this.character2.setDebug(true, true, 0xff0000);
   
       this.createCoins();
+      this.setupTouchControls();
     }
 
+setupTouchControls() {
+  const leftButton1 = document.getElementById("left1");
+  const rightButton1 = document.getElementById("right1");
+  const upButton1 = document.getElementById("up1");
 
+  leftButton1.addEventListener("touchstart", () => this.startMoving(this.character1, "left"));
+  leftButton1.addEventListener("touchend", () => this.stopMoving(this.character1));
+  rightButton1.addEventListener("touchstart", () => this.startMoving(this.character1, "right"));
+  rightButton1.addEventListener("touchend", () => this.stopMoving(this.character1));
+  upButton1.addEventListener("touchstart", () => this.jumpCharacter(this.character1)); // Add jump event listener
+
+  const leftButton2 = document.getElementById("left2");
+  const rightButton2 = document.getElementById("right2");
+  const upButton2 = document.getElementById("up2");
+
+  leftButton2.addEventListener("touchstart", () => this.startMoving(this.character2, "left"));
+  leftButton2.addEventListener("touchend", () => this.stopMoving(this.character2));
+  rightButton2.addEventListener("touchstart", () => this.startMoving(this.character2, "right"));
+  rightButton2.addEventListener("touchend", () => this.stopMoving(this.character2));
+  upButton2.addEventListener("touchstart", () => this.jumpCharacter(this.character2)); 
+}
+
+jumpCharacter(character) {
+  if (character.body.blocked.down) {
+      character.setVelocityY(-500);
+      this.playAudio("jump");
+  }
+}
+
+
+startMoving(character, direction) {
+  const touchSpeedMultiplier = 2; 
+  switch (direction) {
+      case "left":
+          character.setVelocityX(-200 * touchSpeedMultiplier); 
+          break;
+      case "right":
+          character.setVelocityX(200 * touchSpeedMultiplier); 
+  }
+
+  character.touchMoveInterval = setInterval(() => {
+      switch (direction) {
+          case "left":
+              character.setVelocityX(-200 * touchSpeedMultiplier); 
+              break;
+          case "right":
+              character.setVelocityX(200 * touchSpeedMultiplier);
+              break;
+      }
+  }, 100); 
+}
+
+stopMoving(character) {
+  clearInterval(character.touchMoveInterval);
+  character.setVelocityX(0);
+}
+
+    moveCharacter(character, direction) {
+      if (direction === "left") {
+        character.setVelocityX(-200);
+      } else if (direction === "right") {
+        character.setVelocityX(200);
+      }
+    }
   
     createCoins() {
       let coinsX = this.Data.waterCoinsX;
