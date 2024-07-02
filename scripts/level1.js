@@ -115,8 +115,8 @@ class level1 extends Phaser.Scene {
     layer.setDepth(1);
     this.character1.setDepth(2);
     this.character2.setDepth(2);
-    this.character1.setDebug(true, true, 0xff0000);
-    this.character2.setDebug(true, true, 0xff0000);
+    this.character1.setDebug(false);
+    this.character2.setDebug(false);
 
     this.createCoins();
   }
@@ -147,13 +147,13 @@ class level1 extends Phaser.Scene {
     for (let i = 0; i < 10; i++) {
       const x = Phaser.Math.Between(100, 800);
       const y = Phaser.Math.Between(100, 600);
-      const coin = this.coins.create(x, y, "coin");
+      const coin = this.coins.create(x, y, "coin").setDebug(false);
       coin.body.allowGravity = false;
     }
     for (let i = 0; i < 10; i++) {
       const x = Phaser.Math.Between(100, 800);
       const y = Phaser.Math.Between(100, 600);
-      const coin2 = this.coins2.create(x, y, "coin2");
+      const coin2 = this.coins2.create(x, y, "coin2").setDebug(false);
       coin2.body.allowGravity = false;
     }
   }
