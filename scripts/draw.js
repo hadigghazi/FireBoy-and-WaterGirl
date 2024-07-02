@@ -77,7 +77,6 @@ function saveCanvasToLocalStorage(key) {
     drawing.length === 0 ||
     (drawing.length === 1 && drawing[0].length === 0)
   ) {
-    console.log(`Saving empty character to localStorage with key: ${key}`);
     localStorage.setItem(key, "");
   } else {
     loadPixels();
@@ -93,5 +92,4 @@ function saveCanvasToLocalStorage(key) {
       localStorage.setItem(key, img);
     }
   }
-  console.log(`Current localStorage for ${key}: `, localStorage.getItem(key));
 }
