@@ -267,6 +267,7 @@ startMoving(character, direction) {
           break;
       case "right":
           character.setVelocityX(200 * touchSpeedMultiplier); 
+          break;
   }
 
   character.touchMoveInterval = setInterval(() => {
@@ -286,7 +287,7 @@ stopMoving(character) {
   character.setVelocityX(0);
 }
 
-    moveCharacter(character, direction) {
+moveCharacter(character, direction) {
       if (direction === "left") {
         character.setVelocityX(-200);
       } else if (direction === "right") {
@@ -354,6 +355,8 @@ stopMoving(character) {
 
 
     }
+
+    
 
 
   /*handleCollisionCharacter1(character, wallBtn) {
