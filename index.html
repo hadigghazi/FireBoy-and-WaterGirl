@@ -1,35 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FireBoy and WaterGirl</title>
-    <link rel="stylesheet" href="./styles/styles.css" />
-  </head>
-  <body>
-    <header>
-      <img src="assets/Logo.png" class="logo">
-        <h1 class="title1">FB&WG</h1>
-        
-      
-    </header>
-      <section class="home">
-        
-        <img src="assets/mount2.png" class="mount2">
-        <img src="assets/mount1.png" class="mount1">
-        <img src="assets/bush2.png" class="bush2">
-        <h1 class="title">FireBoy and WaterGirl</h1>
-        <img src="assets/bush1.png" class="bush1">
-        <img src="assets/leaf2.png" class="leaf2">
-        <img src="assets/leaf1.png" class="leaf1">
-      </section>
-      <div class="game-container-wrapper">
-        <div id="gameContainer"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FireBoy and WaterGirl</title>
+  <script src="./p5/p5.js"></script>  <script src="./scripts/draw.js"></script>
+
+  <link rel="stylesheet" href="./styles/styles.css" />
+</head>
+<body>
+  <header>
+    <img src="assets/Logo.png" class="logo">
+  </header>
+  <section class="home">
+    <img src="assets/mount2.png" class="mount2">
+    <img src="assets/mount1.png" class="mount1">
+    <img src="assets/bush2.png" class="bush2">
+    <h1 class="title">FireBoy and WaterGirl</h1>
+    <img src="assets/bush1.png" class="bush1">
+    <img src="assets/leaf2.png" class="leaf2">
+    <img src="assets/leaf1.png" class="leaf1">
+  </section>
+
+  <div class="choose-container">
+    <h1>Draw your characters!</h1>
+    <h3>Leave it empty to play with the real fireboy and watergirl :)</h3>
+    <div id="canvasContainer1" class="canvas-container">
+      <p id="player1-Text">Draw Player 1</p>
+      <div id="canvasWrapper1"></div>
+      <div class="button-wrapper">
+        <button id="clearButton1">Clear</button>
+        <button id="nextButton1">Next</button>
       </div>
-      <div class="page-footer"></div>
-      <script src="scripts/main.js"></script>
-      <script src="./scripts/phaser.js"></script>
-      <script type="module" src="scripts/game.js"></script>
+    </div>
+    <div id="canvasContainer2" class="canvas-container" style="display: none">
+      <p id="player2-Text">Draw Player 2</p>
+      <div id="canvasWrapper2"></div>
+      <div class="button-wrapper">
+        <button id="clearButton2">Clear</button>
+        <button id="nextButton2">Next</button>
+      </div>
+    </div>
+  </div>
+
+
   
-  </body>
+
+  <div class="game-container-wrapper">
+    <div id="gameContainer"></div>
+  </div>
+  <div class="page-footer"></div>
+  <script src="scripts/main.js"></script>
+  <script src="./scripts/phaser.js"></script>
+  <script type="module" src="scripts/game.js"></script>
+</body>
 </html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
+ <editorsettings>
+  <export target="level2.csv" format="csv"/>
+ </editorsettings>
+ <tileset firstgid="1" source="../Tile.tsx"/>
+ <tileset firstgid="1" source="../../../../../jawthar last/FireBoy-and-WaterGirl/assets/tileset3.tsx"/>
+ <tileset firstgid="1" source="../tileset.tsx"/>
+ <tileset firstgid="2" source="../obstacles/obstacle2.tsx"/>
+ <tileset firstgid="3" source="../obstacles/obstacle1.tsx"/>
+ <tileset firstgid="4" source="../obstacles/door.tsx"/>
+ <tileset firstgid="5" source="../obstacles/tilset.tsx"/>
+ <tileset firstgid="6" source="../obstacles/lava.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="25" height="20">
+  <data encoding="csv">
+5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,
+5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,
+5,5,5,5,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,
+5,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,5,
+5,0,0,0,0,0,5,0,0,0,0,0,0,5,5,5,5,0,0,5,0,0,0,0,5,
+5,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,
+5,0,0,0,0,0,5,5,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,5,
+5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,
+5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,
+5,0,0,0,0,0,0,5,5,5,5,0,0,0,0,0,0,0,0,0,0,0,5,5,5,
+5,0,0,0,0,0,0,0,0,0,5,5,5,0,5,0,0,5,0,0,5,5,5,0,5,
+5,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,5,5,5,5,5,0,0,5,
+5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,
+5,5,0,0,5,5,5,5,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,5,
+5,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,5,
+5,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,5,5,0,0,0,0,5,
+5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,
+5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,
+5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5
+</data>
+ </layer>
+</map>
