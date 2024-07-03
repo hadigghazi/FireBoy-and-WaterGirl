@@ -1,97 +1,104 @@
-let canvas;
-let drawing = [];
-let currentPath = [];
-let isDrawing = false;
-let currentPlayer = 1;
+let canvasElement;
+let drawnPaths = [];
+let currentDrawingPath = [];
+let isDrawingNow = false;
+let activePlayer = 1;
 
 function setup() {
-  canvas = createCanvas(50, 90);
-  canvas.parent("canvasWrapper1");
-  clearCanvas();
+  canvasElement = createCanvas(100, 100);
+  canvasElement.parent("canvasWrapper1");
+  resetCanvas();
 
-  select("#nextButton1").mousePressed(nextPlayer);
-  select("#nextButton2").mousePressed(saveDrawings);
-  select("#clearButton1").mousePressed(clearCanvas);
-  select("#clearButton2").mousePressed(clearCanvas);
+  select("#nextButton1").mousePressed(switchToNextPlayer);
+  select("#nextButton2").mousePressed(() => saveCanvasToLocalStorage("character2"));
+  select("#clearButton1").mousePressed(resetCanvas);
+  select("#clearButton2").mousePressed(resetCanvas);
+
+  canvasElement.elt.addEventListener('touchstart', handleTouchStart);
+  canvasElement.elt.addEventListener('touchmove', handleTouchMove);
+  canvasElement.elt.addEventListener('touchend', handleTouchEnd);
 }
 
 function draw() {
   noFill();
-  if (isDrawing) {
-    stroke(currentPlayer === 1 ? [255, 0, 0] : [0, 0, 255]);
-    strokeWeight(4);
-    const point = {
-      x: mouseX,
-      y: mouseY,
-    };
-    currentPath.push(point);
+  if (isDrawingNow) {
+    stroke(activePlayer === 1 ? [255, 0, 0] : [0, 0, 255]);
+    strokeWeight(5);
+    const newPoint = { x: mouseX, y: mouseY };
+    currentDrawingPath.push(newPoint);
   }
 
-  for (let i = 0; i < drawing.length; i++) {
-    const path = drawing[i];
+  drawnPaths.forEach(path => {
     beginShape();
-    for (let j = 0; j < path.length; j++) {
-      vertex(path[j].x, path[j].y);
-    }
+    path.forEach(point => vertex(point.x, point.y));
     endShape();
-  }
+  });
 }
 
 function mousePressed() {
-  isDrawing = true;
-  currentPath = [];
-  drawing.push(currentPath);
+  isDrawingNow = true;
+  currentDrawingPath = [];
+  drawnPaths.push(currentDrawingPath);
 }
 
 function mouseReleased() {
-  isDrawing = false;
+  isDrawingNow = false;
 }
 
-function nextPlayer() {
-  if (currentPlayer === 1) {
+function switchToNextPlayer() {
+  if (activePlayer === 1) {
     saveCanvasToLocalStorage("character1");
     select("#canvasContainer1").hide();
     select("#canvasContainer2").show();
-    canvas.parent("canvasWrapper2");
-    clearCanvas();
-    currentPlayer = 2;
+    canvasElement.parent("canvasWrapper2");
+    resetCanvas();
+    activePlayer = 2;
   }
 }
 
-function saveDrawings() {
-  saveCanvasToLocalStorage("character2");
-  alert("Characters saved!");
-}
-
-function clearCanvas() {
-  isDrawing = false;
-  drawing = [];
-  currentPath = [];
+function resetCanvas() {
+  isDrawingNow = false;
+  drawnPaths = [];
+  currentDrawingPath = [];
   clear();
   background(255, 255, 255, 0);
 }
 
 function saveCanvasToLocalStorage(key) {
-  console.log(drawing);
-  if (
-    drawing.length === 0 ||
-    (drawing.length === 1 && drawing[0].length === 0)
-  ) {
-    console.log(`Saving empty character to localStorage with key: ${key}`);
+  if (drawnPaths.length === 0 || (drawnPaths.length === 1 && drawnPaths[0].length === 0)) {
     localStorage.setItem(key, "");
   } else {
     loadPixels();
-    let img = canvas.canvas.toDataURL("image/png");
-    const emptyImageData =
-"    data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAABaCAYAAAD6mAWGAAAAAXNSR0IArs4c6QAAAO9JREFUeF7tksEJADAMhJL9l+4OglCC/Z8Q7c6Rt0fumA75rWRFKiIZ6GtJYjG2IlidNKyIJBZjK4LVScOKSGIxtiJYnTSsiCQWYyuC1UnDikhiMbYiWJ00rIgkFmMrgtVJw4pIYjG2IlidNKyIJBZjK4LVScOKSGIxtiJYnTSsiCQWYyuC1UnDikhiMbYiWJ00rIgkFmMrgtVJw4pIYjG2IlidNKyIJBZjK4LVScOKSGIxtiJYnTSsiCQWYyuC1UnDikhiMbYiWJ00rIgkFmMrgtVJw4pIYjG2IlidNKyIJBZjK4LVScOKSGIx9kyRB9aVAFukLBc2AAAAAElFTkSuQmCC"
-    if (img === emptyImageData) {
+    let image = canvasElement.canvas.toDataURL("image/png");
+    const emptyImageData = "data:image/png;base64,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";
+    if (image === emptyImageData) {
       localStorage.setItem(key, "");
-      console.log(`Character saved to localStorage with key: ${key}`);
-      return;
     } else {
-      console.log(`Saving character to localStorage with key: ${key}`);
-      localStorage.setItem(key, img);
+      localStorage.setItem(key, image);
     }
   }
-  console.log(`Current localStorage for ${key}: `, localStorage.getItem(key));
+}
+
+function handleTouchStart(e) {
+  e.preventDefault();
+  isDrawingNow = true;
+  currentDrawingPath = [];
+  drawnPaths.push(currentDrawingPath);
+  const touch = e.touches[0];
+  const newPoint = { x: touch.clientX - canvasElement.elt.getBoundingClientRect().left, y: touch.clientY - canvasElement.elt.getBoundingClientRect().top };
+  currentDrawingPath.push(newPoint);
+}
+
+function handleTouchMove(e) {
+  e.preventDefault();
+  if (isDrawingNow) {
+    const touch = e.touches[0];
+    const newPoint = { x: touch.clientX - canvasElement.elt.getBoundingClientRect().left, y: touch.clientY - canvasElement.elt.getBoundingClientRect().top };
+    currentDrawingPath.push(newPoint);
+  }
+}
+
+function handleTouchEnd(e) {
+  e.preventDefault();
+  isDrawingNow = false;
 }
