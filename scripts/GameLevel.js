@@ -1,3 +1,6 @@
+    let scores =[];
+
+
 class GameLevel extends Phaser.Scene {
 
 
@@ -10,23 +13,30 @@ class GameLevel extends Phaser.Scene {
 
     this.intialData = Data;
     
+
+
     this.levelCount = 3;
+
 
     
 
   }
 
+  init(data){
+    this.hearts = data.hearts
+  }
+
 
   
     preload() {
+      //Loading to phaser's cache 
+      //to have all ressources in ram
 
 
+      this.load.image("tileset", "./assets/images/tileset.png");
+      this.load.image("background", "./assets/images/Ground.png");
 
-      this.load.image("tileset", "./assets/tileset.png");
-      this.load.image("background", "./assets/Ground.png");
 
-      /*this.load.image("character1", "./assets/firecharacter.png");
-      this.load.image("character2", "./assets/watercharacter.png");*/
       this.load.image(
         "character1",
         this.loadImageFromLocalStorage1("character1")
@@ -36,21 +46,26 @@ class GameLevel extends Phaser.Scene {
         this.loadImageFromLocalStorage2("character2")
       );
 
-      this.load.audio("coin", "./assets/coin.mp3");
-      this.load.audio("jump", "./assets/jump.mp3");
-      this.load.audio("dead", "./assets/dead.mp3");
-      this.load.audio("theme", "./assets/theme.mp3");
-      this.load.image("coin", "./assets/diamond.png");
-      this.load.image("coin2", "./assets/fire.png");
-      this.load.image("wall", "./assets/Wall.png");
-      this.load.image("wallBtn", "./assets/wallBtn.png");
+      this.load.audio("coin", "./assets/audio/coin.mp3");
+      this.load.audio("jump", "./assets/audio/jump.mp3");
+      this.load.audio("levelEnd", "./assets/audio/levelEnd.mp3");
+      this.load.audio("theme", "./assets/audio/theme.mp3");
       
+      this.load.image("coin", "./assets/images/diamond.png");
+      this.load.image("coin2", "./assets/images/fire.png");
+      this.load.image("wall", "./assets/images/Wall.png");
+      this.load.image("wallBtn", "./assets/images/wallBtn.png");
+      this.load.image("heart" , "../assets/images/heart.png")
       
+      this.load.audio("wallOpen" , "../assets/audio/wallOpen.mp3")
+      this.load.audio("wallClose" , "../assets/audio/wallClose.mp3")
+      this.load.audio("lose" , "../assets/audio/lose.mp3")
+      this.load.audio("gameOverSound" , "../assets/audio/gameOver.mp3")
       
-      
-      this.load.tilemapCSV("tilemap1", "./assets/LEVEL1.csv");
-      this.load.tilemapCSV("tilemap2", "./assets/level2.csv");
-      this.load.tilemapCSV("tilemap3", "./assets/level3.csv");
+
+      this.load.tilemapCSV("tilemap1", "./assets/maps/LEVEL1.csv");
+      this.load.tilemapCSV("tilemap2", "./assets/maps/level2.csv");
+      this.load.tilemapCSV("tilemap3", "./assets/maps/level3.csv");
       
 
 
@@ -66,7 +81,19 @@ class GameLevel extends Phaser.Scene {
   
     create() {
 
-    this.Data = structuredClone(this.intialData);
+    this.Data = structuredClone(this.intialData);// To allow repeating of the cycle of levelswithout problems
+    /* explantion:
+
+    The constructor is runned once when the object of a levvel is declared and initialized
+    
+    and having the this.Data have the same refrencee in memory to the object created the first time will cause a problem
+
+    the game pushes to an array.
+    I need that resetted
+    
+
+    */
+    this.levelStartTime = Math.floor(new Date().getTime() / 1000);
 
 
 
@@ -85,6 +112,8 @@ class GameLevel extends Phaser.Scene {
         tileWidth: 32,
         tileHeight: 32,
       });
+
+
       const tiles = map.addTilesetImage("tileset");
       const layerY = background.displayHeight / map.heightInPixels;
       const layer = map.createLayer(0, tiles, 0, layerY);
@@ -95,7 +124,7 @@ class GameLevel extends Phaser.Scene {
 
 
   
-      const groundLevel = this.cameras.main.height - 600;
+      const groundLevel = this.cameras.main.height - 50;
 
 
 
@@ -106,7 +135,7 @@ class GameLevel extends Phaser.Scene {
 
   
       this.character1 = this.physics.add
-        .sprite(190, groundLevel, "character1")
+        .sprite(100, groundLevel, "character1")
         .setOrigin(0.5, 1)
         .setCollideWorldBounds(true)
         .setBounce(0.2)
@@ -122,7 +151,7 @@ class GameLevel extends Phaser.Scene {
 
   
       this.character2 = this.physics.add
-        .sprite(200, groundLevel, "character2")
+        .sprite(160, groundLevel, "character2")
         .setOrigin(0.5, 1)
         .setCollideWorldBounds(true)
         .setBounce(0.2)
@@ -170,10 +199,8 @@ class GameLevel extends Phaser.Scene {
 
       this.createWalls();
 
-      //this.physics.add.collider(this.character1, this.wallBtns, this.handleCollisionCharacter1, null, this);
-      
-      /*this.physics.add.overlap(this.character1, this.wallBtns, this.handleCollisionCharacter1, null, this);
-      this.physics.add.overlap(this.character2, this.wallBtns, this.handleCollisionCharacter2, null, this);*/
+ 
+
 
 
       //loading audios and playing the theme
@@ -183,7 +210,7 @@ class GameLevel extends Phaser.Scene {
   
       this.score = 0;
   
-      this.scoreText = this.add.text(16, 16, "Score: 0", {
+      this.scoreText = this.add.text(16, 10, "Score: 0", {
         fontSize: "24px",
         fill: "#fff",
       }).setScrollFactor(0).setDepth(5);
@@ -192,12 +219,11 @@ class GameLevel extends Phaser.Scene {
 
 
 
-
       // for development only
-      this.dimensionsText = this.add.text(400, 40, "Dimensions", {
+      /*this.dimensionsText = this.add.text(400, 40, "Dimensions", {
         fontSize: "24px",
         fill: "#00f",
-      }).setScrollFactor(0).setDepth(5);
+      }).setScrollFactor(0).setDepth(5);*/
 
 
 
@@ -207,93 +233,64 @@ class GameLevel extends Phaser.Scene {
 
 
   
-      this.updateScoreEvent = this.time.addEvent({
+      /*this.updateScoreEvent = this.time.addEvent({
         delay: 100,
         callback: () => this.updateScore(),
         callbackScope: this,
         loop: true,
-      });
+      });*/
   
       this.cursors = this.input.keyboard.createCursorKeys();
       this.cameras.main.startFollow(this.character1, true);
       this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-  
-      this.physics.world.createDebugGraphic();
-      layer.setDepth(1);
+     layer.setDepth(1);
       this.character1.setDepth(2);
       this.character2.setDepth(2);
+
+
+     /* this.physics.world.createDebugGraphic();
       this.character1.setDebug(true, true, 0xff0000);
-      this.character2.setDebug(true, true, 0xff0000);
+      this.character2.setDebug(true, true, 0xff0000);*/
   
       this.createCoins();
+      this.createHearts();
       this.setupTouchControls();
     }
 
-setupTouchControls() {
-  const leftButton1 = document.getElementById("left1");
-  const rightButton1 = document.getElementById("right1");
-  const upButton1 = document.getElementById("up1");
 
-  leftButton1.addEventListener("touchstart", () => this.startMoving(this.character1, "left"));
-  leftButton1.addEventListener("touchend", () => this.stopMoving(this.character1));
-  rightButton1.addEventListener("touchstart", () => this.startMoving(this.character1, "right"));
-  rightButton1.addEventListener("touchend", () => this.stopMoving(this.character1));
-  upButton1.addEventListener("touchstart", () => this.jumpCharacter(this.character1)); // Add jump event listener
-
-  const leftButton2 = document.getElementById("left2");
-  const rightButton2 = document.getElementById("right2");
-  const upButton2 = document.getElementById("up2");
-
-  leftButton2.addEventListener("touchstart", () => this.startMoving(this.character2, "left"));
-  leftButton2.addEventListener("touchend", () => this.stopMoving(this.character2));
-  rightButton2.addEventListener("touchstart", () => this.startMoving(this.character2, "right"));
-  rightButton2.addEventListener("touchend", () => this.stopMoving(this.character2));
-  upButton2.addEventListener("touchstart", () => this.jumpCharacter(this.character2)); 
-}
-
-jumpCharacter(character) {
-  if (character.body.blocked.down) {
-      character.setVelocityY(-500);
-      this.playAudio("jump");
-  }
-}
-
-
-startMoving(character, direction) {
-  const touchSpeedMultiplier = 2; 
-  switch (direction) {
-      case "left":
-          character.setVelocityX(-200 * touchSpeedMultiplier); 
-          break;
-      case "right":
-          character.setVelocityX(200 * touchSpeedMultiplier); 
-          break;
-  }
-
-  character.touchMoveInterval = setInterval(() => {
-      switch (direction) {
-          case "left":
-              character.setVelocityX(-200 * touchSpeedMultiplier); 
-              break;
-          case "right":
-              character.setVelocityX(200 * touchSpeedMultiplier);
-              break;
-      }
-  }, 100); 
-}
-
-stopMoving(character) {
-  clearInterval(character.touchMoveInterval);
-  character.setVelocityX(0);
-}
-
-moveCharacter(character, direction) {
+    setupTouchControls() {
+      const leftButton1 = document.getElementById("left1");
+      const rightButton1 = document.getElementById("right1");
+      const upButton1 = document.getElementById("up1");
+  
+      leftButton1.addEventListener("touchstart", () => this.moveCharacter(this.character1, "left"));
+      rightButton1.addEventListener("touchstart", () => this.moveCharacter(this.character1, "right"));
+      upButton1.addEventListener("touchstart", () => this.jumpCharacter(this.character1));
+  
+      const leftButton2 = document.getElementById("left2");
+      const rightButton2 = document.getElementById("right2");
+      const upButton2 = document.getElementById("up2");
+  
+      leftButton2.addEventListener("touchstart", () => this.moveCharacter(this.character2, "left"));
+      rightButton2.addEventListener("touchstart", () => this.moveCharacter(this.character2, "right"));
+      upButton2.addEventListener("touchstart", () => this.jumpCharacter(this.character2));
+    }
+  
+    moveCharacter(character, direction) {
       if (direction === "left") {
-        character.setVelocityX(-200);
+        character.setVelocityX(-400);
       } else if (direction === "right") {
-        character.setVelocityX(200);
+        character.setVelocityX(400);
       }
     }
+  
+    jumpCharacter(character) {
+      if (character.body.blocked.down) {
+        character.setVelocityY(-500);
+        this.playAudio("jump");
+      }
+    }
+  
   
     createCoins() {
       let coinsX = this.Data.waterCoinsX;
@@ -324,6 +321,33 @@ moveCharacter(character, direction) {
 
     }
 
+    createHearts(){
+
+    this.heartsGroup = this.physics.add.staticGroup().setDepth(5);
+
+    for (let i = 0; i < this.hearts; i++) {
+        let heart = this.heartsGroup.create(770 - i * 25, 16, 'heart').setDepth(5).setScale(0.1);
+        heart.refreshBody();
+        this.heartsGroup.add(heart);
+    }
+
+    }
+
+     loseHeart() {
+      // Remove the last heart from the group
+      if (this.heartsGroup.getLength() > 0) {
+          let lastHeart = this.heartsGroup.getLast(true);
+          lastHeart.destroy();
+
+          if(this.hearts == 0){
+            this.looseGame();
+          }else{
+           this.playAudio("lose");
+
+          }
+      }
+  }
+
 
     createWalls() {
 
@@ -340,7 +364,7 @@ moveCharacter(character, direction) {
       wallBtn2.body.allowGravity = false;
 
       item.push(
-        wall,false
+        wall,false,"close","close"
       )
 
 
@@ -356,33 +380,12 @@ moveCharacter(character, direction) {
 
     }
 
+
+
     
 
 
-  /*handleCollisionCharacter1(character, wallBtn) {
 
-    console.log("sadasd");
-    this.isColliding = false;
-
-  
-
-
-  }
-
-  handleCollisionCharacter2(character, wallBtn) {
-
-    console.log("sadasd");
-    this.isColliding = false;
-
-       /*   this.wallLinks.forEach((item)=>{
-            if(item[0] == wallBtn){
-              item[2] =1;
-            }
-          }
-  )*//*
-
-
-  }*/
 
 
   
@@ -393,11 +396,16 @@ moveCharacter(character, direction) {
       coin.destroy();
     }
   
-    loadAudios() {
+    loadAudios() {//filling audio objects in an arraay
       this.audios = {
         jump: this.sound.add("jump"),
         coin: this.sound.add("coin"),
-        dead: this.sound.add("dead"),
+        levelEnd: this.sound.add("levelEnd"),
+        wallOpen: this.sound.add("wallOpen"),
+        wallClose: this.sound.add("wallClose"),
+        lose: this.sound.add("lose"),
+        gameOverSound: this.sound.add("gameOverSound"),
+        
       };
     }
   
@@ -410,7 +418,7 @@ moveCharacter(character, direction) {
       this.theme.stop();
       this.theme.play({
         mute: false,
-        volume: 0,
+        volume: 0.1,
         rate: 1,
         detune: 0,
         seek: 0,
@@ -423,7 +431,7 @@ moveCharacter(character, direction) {
 
 
   
-    update() {
+    update() {// a continouees infinite loop till the level ends
 
 
       this.character1.setVelocityX(0);
@@ -450,6 +458,7 @@ moveCharacter(character, direction) {
       
 
 
+      //End the game when the door is reacvhed
       const thresholdY = 150; 
       if (this.character1.y <= thresholdY && this.character2.y <= thresholdY
           && this.character1.x <= 100 && this.character2.x <= 100 ) {
@@ -458,34 +467,94 @@ moveCharacter(character, direction) {
 
       }
 
+      let x1,x2,y1,y2;
+      x1 = this.character1.x ;
+      y1 = this.character1.y ;
+      x2 = this.character2.x ;
+      y2 = this.character2.y ;
 
-      this.Data.walls.forEach((item)=>{
 
-        if (this.character1.x > item[3]-20  && this.character1.x <= item[3]+20 && this.character1.y > item[4]-10  &&  this.character1.y <= item[4]+70
-          ||this.character1.x > item[5]-20  && this.character1.x <= item[5]+20 && this.character1.y > item[6]-10  &&  this.character1.y <= item[6]+70
-          ||this.character2.x > item[3]-20  && this.character2.x <= item[3]+20 && this.character2.y > item[4]-10  &&  this.character2.y <= item[4]+70
-          ||this.character2.x > item[5]-20  && this.character2.x <= item[5]+20 && this.character2.y > item[6]-10  &&  this.character2.y <= item[6]+70) {
-              
+      this.Data.walls.forEach( (item)=>{
+
+            item[9] = item[10];
+
+          
+        if (x1> item[3]-20    &&   x1<= item[3]+20   &&   y1 > item[4]-10   &&    y1 <= item[4]+70
+          ||x1> item[5]-20    &&   x1<= item[5]+20   &&   y1 > item[6]-10   &&    y1 <= item[6]+70
+          ||x2 > item[3]-20   &&   x2 <= item[3]+20  &&   y2 > item[4]-10   &&    y2 <= item[4]+70
+          ||x2 > item[5]-20   &&   x2 <= item[5]+20  &&   y2 > item[6]-10   &&    y2 <= item[6]+70) {
+          
+            item[10] = "open";
           item[8].setY(item[1]-35);
           item[8].setAngle(90);
-          item[8].body.enable = false;
+          item[8].body.enable = false; 
          item[8].refreshBody();
 
+
       }else {
+        item[10] = "close";
         item[8].setY(item[1]);
         item[8].setAngle(0);
         item[8].body.enable = true;
        item[8].refreshBody();
 
-      }
+      } 
+
+      if(item[9] == "open" && item[10] == "close" ){
+          //console.log("close")
+          this.playAudio("wallClose");
+        }else if(item[9] == "close" && item[10]=="open"){
+          //console.log("open")
+          this.playAudio("wallOpen");
+
+
+        }
 
 }      
-)    
+)  
 
 
 
 
-      this.dimensionsText.setText(Math.floor(this.character2.x) + " x "+Math.floor(this.character2.y))
+this.Data.fire.forEach( (item)=>{
+  /*console.log("in");
+  console.log(item[0]);
+  console.log(item[1]);*/
+
+if (x2 > item[0]-17   &&   x2 <= item[0]+17  &&   y2 > item[1]-8   &&    y2 <= item[1]+8) {
+
+ this.character2.x = x2 + 70;/**/
+
+ this.hearts--;
+ this.loseHeart();
+}
+}      
+)
+
+
+
+
+this.Data.water.forEach( (item)=>{
+
+
+if (x1 > item[0]-17   &&   x1 <= item[0]+17  &&   y1 > item[1]-8   &&    y1 <= item[1]+8) {
+
+ this.character1.x = x1 - 70;
+
+ this.hearts--;
+ this.loseHeart();
+
+
+}
+}      
+) 
+
+
+
+
+
+
+      //this.dimensionsText.setText(Math.floor(this.character2.x) + " x "+Math.floor(this.character2.y))
 
 
       
@@ -498,18 +567,18 @@ moveCharacter(character, direction) {
 
     loadImageFromLocalStorage1(key) {
       let imgData = localStorage.getItem(key);
-      if (imgData) {
+      if (!useDefault  && imgData) {
         return imgData;
       }
-      return "assets/firecharacter.png";
+      return "assets/images/firecharacter.png";
     }
   
     loadImageFromLocalStorage2(key) {
       let imgData = localStorage.getItem(key);
-      if (imgData) {
+      if (!useDefault  && imgData) {
         return imgData;
       }
-      return "assets/watercharacter.png";
+      return "assets/images/watercharacter.png";
     }
   
   
@@ -543,6 +612,30 @@ moveCharacter(character, direction) {
         },
       });
     }
+
+
+
+    looseGame(){
+        this.registry.set("currentLevel", 1);
+
+        let currentLevel = this.registry.get("currentLevel") ;
+  
+        scores.push(this.score);
+
+
+          this.registry.set("score", this.score);
+          this.playAudio("gameOverSound");
+          this.scene.stop();
+          this.theme.stop();
+          this.scene.start("gameover", {  scores: scores });
+          scores = []; 
+
+  
+
+
+
+    }
+    
   
     finishScene() {
 
@@ -550,19 +643,26 @@ moveCharacter(character, direction) {
       this.registry.set("currentLevel", 1);
       }
       let currentLevel = this.registry.get("currentLevel") ;
+
+      const levelEndTime = Math.floor(new Date().getTime() / 1000);
+      const speedValue =Math.floor(10 / (levelEndTime - this.levelStartTime) * 10000)
+      this.score +=speedValue;
+      scores.push(this.score);
       if(currentLevel == this.levelCount){
-        this.registry.set("score", this.score);
-        this.playAudio("dead");
+
+        this.playAudio("levelEnd");
         this.scene.stop();
         this.theme.stop();
         this.registry.set("currentLevel", 1);
-        this.scene.start("gameover", { level: currentLevel, score: this.score });
+        this.scene.start("end", { level: currentLevel, scores: scores });
+        scores = [];
       }else{
-      this.registry.set("score", this.score);
-      this.playAudio("dead");
-      this.scene.stop();
-      this.theme.stop();
-      this.scene.start("nextScenex", { level: currentLevel, score: this.score }); 
+        //console.log(scores)
+        this.registry.set("score", this.score);
+        this.playAudio("levelEnd");
+        this.scene.stop();
+        this.theme.stop();
+        this.scene.start("nextScenex", { score : this.score, hearts: this.hearts}); 
       }
 
     }

@@ -4,45 +4,58 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FireBoy and WaterGirl</title>
-  <script src="./p5/p5.js"></script>  <script src="./scripts/draw.js"></script>
+  <script src="./p5/p5.js"></script> 
+   <script src="./scripts/draw.js"></script>
 
   <link rel="stylesheet" href="./styles/styles.css" />
 </head>
 <body>
   <header>
-    <img src="assets/Logo.png" class="logo">
+    <img src="assets/images/Logo.png" class="logo">
   </header>
   <section class="home">
-    <img src="assets/mount2.png" class="mount2">
-    <img src="assets/mount1.png" class="mount1">
-    <img src="assets/bush2.png" class="bush2">
+    <img src="assets/images/mount2.png" class="mount2">
+    <img src="assets/images/mount1.png" class="mount1">
+    <img src="assets/images/bush2.png" class="bush2">
     <h1 class="title">FireBoy and WaterGirl</h1>
-    <img src="assets/bush1.png" class="bush1">
-    <img src="assets/leaf2.png" class="leaf2">
-    <img src="assets/leaf1.png" class="leaf1">
+    <img src="assets/images/bush1.png" class="bush1">
+    <img src="assets/images/leaf2.png" class="leaf2">
+    <img src="assets/images/leaf1.png" class="leaf1">
   </section>
 
   <div class="choose-container">
     <h1>Draw your characters!</h1>
     <h3>Leave it empty to play with the real fireboy and watergirl :)</h3>
+
+
     <div id="canvasContainer1" class="canvas-container">
       <p id="player1-Text">Draw Player 1</p>
-      <div id="canvasWrapper1"></div>
       <div class="button-wrapper">
         <button id="clearButton1">Clear</button>
+        <div id="canvasWrapper1"></div>
         <button id="nextButton1">Next</button>
       </div>
     </div>
-    <div id="canvasContainer2" class="canvas-container" style="display: none">
+
+
+    <div id="canvasContainer2" class="canvas-container">
       <p id="player2-Text">Draw Player 2</p>
-      <div id="canvasWrapper2"></div>
       <div class="button-wrapper">
         <button id="clearButton2">Clear</button>
-        <button id="nextButton2">Next</button>
+        <div id="canvasWrapper2"></div>
+        <button id="nextButton2" >Next</button>
       </div>
     </div>
+
+    
   </div>
 
+  <div id="canvasContainer" class="canvas-container" style="margin: 0;" >
+
+    <div class="button-wrapper-2">
+      <button id="defaultBtn">Use Default</button><img src="./assets/images/tick.png" class="tick" style="visibility: hidden;" >
+    </div>
+  </div>
 
   
 

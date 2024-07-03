@@ -126,6 +126,15 @@ html, body {
     background: #3B3291;
 }  
 
+#canvasContainer1 {
+    display: flex;
+    flex-direction: column;
+}
+
+#canvasContainer2 {
+    display: none;
+}
+
 canvas {
     border: 2px solid #555;
     border-radius: 10px;
@@ -137,6 +146,14 @@ canvas {
     justify-content: center;
     gap: 30px;
     margin-top: 10px;
+}
+.button-wrapper-2 {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 10px;
+    position:relative;
+    left:-27px;
 }
 button {
     background-color: #fff;
@@ -150,6 +167,13 @@ button {
 }
 button:hover {
     background-color: #418cdc;
+}
+
+.tick {
+
+    height:50px;
+    position: relative;
+
 }
 
 #player1-Text, #player2-Text {
@@ -185,7 +209,7 @@ button:hover {
     }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 850px) {
     .home .title {
         font-size: 28px;
     }
@@ -204,17 +228,30 @@ button:hover {
         display: flex;
         gap: 10px;
     }
+    .button-wrapper-2 {
+        display: flex;
+        gap: 10px;
+        left: -40px;
 
-    .home .title {
-        font-size: 16px;
     }
 
-    button {
-        width: 80%;
+    .home .title {
+        font-size: 40px;
+    }
+
+    .button-wrapper button {
+        width: 50px;
         padding: 10px;
         font-size: 0.5rem;
         text-align: center;
     }
+    .button-wrapper-2 button {
+        width: 50px;
+        padding: 10px;
+        font-size: 0.5rem;
+        text-align: center;
+    }
+
     .about {
         padding: 20px;
     }
@@ -255,5 +292,17 @@ button:hover {
 @media screen and (min-width: 768px) {
     #touch-controls-wrapper {
         display: none;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .canvas-container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    }
+    .canvas-container canvas {
+        margin-bottom: 0;
     }
 }

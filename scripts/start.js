@@ -1,10 +1,11 @@
 export default class GameStart extends Phaser.Scene {
     constructor() {
         super({ key: "gamestart" });
+        this.hearts = 8;
     }
 
     preload() {
-        this.load.bitmapFont("arcade", "assets/arcade.png", "assets/arcade.xml");
+        this.load.bitmapFont("arcade", "assets/images/arcade.png", "assets/arcade.xml");
     }
 
     create() {
@@ -13,7 +14,7 @@ export default class GameStart extends Phaser.Scene {
         this.center_width = this.width / 2;
         this.center_height = this.height / 2;
 
-        this.cameras.main.setBackgroundColor(0x87ceeb);
+        this.cameras.main.setBackgroundColor(0x79c4eb);
 
         this.add
             .bitmapText(
@@ -40,6 +41,6 @@ export default class GameStart extends Phaser.Scene {
     }
 
     startGame() {
-        this.scene.start("level1");
+        this.scene.start("level1", {hearts: this.hearts});
     }
 }
